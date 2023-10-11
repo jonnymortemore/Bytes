@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ type }}
+{% endblock %}
+
+{% block main %}
+
+<section id="search-header">
+    <form  method="get" action="/add" class="">
+        <input name="add-type" value="{{ type }}" type="text" hidden>
+        <button id="add-new" type="submit" class="btn btn-primary"> Add {{ type }}</button>
+    </form>
+    <div class="input-group">
+        <select class="form-select" id="ordering">
+            {% block searchHeaders %}{% endblock %}
+        </select>
+        <select class="form-select" id="asc-desc">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+        <button id="btn-order-items" type="button" class="btn btn-primary">Order Items</button>
+    </div>
+    <div class="input-group">
+        <input id="dataSearch" class="form-control" type="text" placeholder="search..."></input>
+        <button type="button" class="btn btn-primary" id="dataSearchBtn">Search</button>
+        <button type="button" class="btn btn-secondary" id="dataClearBtn">Clear</button>
+    </div>
+</section>
+
+<section id="advanced-search-bar">
+    <div id="AdvancedDropdown" class="accordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#advancedSearchAcc" aria-expanded="false" aria-controls="#advancedSearchAcc" id="advSearchBtn">
+                  Advanced Search
+                </button>
+              </h2>
+              <div id="advancedSearchAcc" class="accordion-collapse collapse" data-bs-parent="#AdvancedDropdown"><div>
+                <div class="accordion-body" id="advSearchBtn"><div>
+                    {% block advancedSearch %}{% endblock %}
+                    <div class="input-group">
+                        <button type="button" class="btn btn-primary" id="AdvSearchBtn">Search</button>
+                        <button type="button" class="btn btn-secondary" id="AdvClearBtn">Clear</button>
+                    </div>
+                </div>
+              </div>
+        </div>
+    </div>
+
+</section>
+<section id="main-data-section" class="col-flex centered">
+    <p id="searchEmpty" hidden>Oops nothing matches that search!</p>
+    {% if (data == "false") %}
+        <h2>This is looking a little empty!</h2>
+        <p>Would you like to add some new {{ type }} ?</p>
+    {% endif %}
+    {% block data %}{% endblock %}
+</section>
+{% endblock %}

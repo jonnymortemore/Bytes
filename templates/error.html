@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Oops!
+{% endblock %}
+
+{% block main %}
+<section class="col-flex centered">
+    <h1>Oops something went wrong there!</h1>
+    <p> {{ error }} </p>
+    <img src="static/pizza.png" alt="pizza cartoon" class="hover-skew">
+</section>
+
+
+{% endblock %}

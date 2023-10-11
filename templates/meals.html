@@ -1,0 +1,160 @@
+{% extends "data.html" %}
+
+{% block searchHeaders %}
+
+<option value="rating">Rating</option>
+<option value="recent">Date</option>
+<option value="alpha">Alphabetical</option>
+
+{% endblock %}
+
+
+{% block advancedSearch %}
+<div class="row">
+    <div class="col">
+        <div class="form-floating">
+            <input id="advSearchMinRating" name="advSearchMinRating" type="number" step="1" class="form-control advSearch" min="1" max="5">
+            <label for="advSearchMinRating">Minimum rating</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <input id="advSearchMaxRating" name="advSearchMaxRating" type="number" step="1" class="form-control advSearch" min="1" max="5">
+            <label for="advSearchMaxRating">Maximum rating</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="AdvSearchCuisine">
+                <option value=""></option>
+                {% for row in cuisine %}
+                    <option value="{{row.dishCuisine}}">{{row.dishCuisine}}</option>
+                {% endfor %}
+            </select>
+            <label for="AdvSearcCuisine">cuisine</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="form-floating">
+            <select name="AdvSearchOccasion" id="AdvSearchOccasion" required  class="form-select advSearch">
+                <option value=""></option>
+              <option value="breakfast">breakfast</option>
+              <option value="lunch">lunch</option>
+              <option value="dinner">dinner</option>
+              <option value="snack">snack</option>
+              <option value="other">other</option>
+          </select>
+          <label for="AdvSearchOccasion">meal of the day</label>
+          </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="advSearchName">
+                <option value=""></option>
+                {% for row in places %}
+                    <option value="{{row.placeName}}">{{row.placeName}}</option>
+                {% endfor %}
+            </select>
+            <label for="advSearchPlace">place</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select name="advSearchType" id="advSearchType" required  class="form-select advSearch">
+            <option value=""></option>
+            <option value="restaurant">restaurant</option>
+            <option value="takeaway">takeaway</option>
+            <option value="meal kit">meal kit</option>
+            </select>
+            <label for="advSearchType">type of meal</label>
+          </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block data %}
+    {% for meal in meals  %}
+    <section class="meal-section data-section" id="{{ meal.meal_id }}">
+        <div class="row align-items-center">
+            <h2 id="Name">{{ meal.placeName }}</h2>
+            <h4 id="Date">{{ meal.mealDate }}</h4>
+        </div>
+        <div class="row align-items-center">
+            <div class="col">
+                <img id="mealImage" src="{{ meal.mealImg }}">
+            </div>
+            <div class="col">
+                <p id="mealType">{{ meal.mealType }}</p>
+                <p id="mealOccasion">{{ meal.mealOccasion }} </p>
+            </div>
+            <div class="col">
+                <p id="mealNotes">{{ meal.mealNotes }}</p>
+                <p id="rating" hidden>{{meal.mealRating}}</p>
+                <div id="MealRating" class="rating">
+                    {% for i in range(0, 5) %}
+                        {% if (i < meal.mealRating) %}
+                            <i class="fa-solid fa-star fa-2xl coloured"></i>
+                        {% else %}
+                            <i class="fa-solid fa-star fa-2xl not-coloured"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="/edit" method="get" id="edit">
+                    <input name="id" type="text" value={{meal.meal_id}} hidden>
+                    <input name="type" type="text" value="meal" hidden>
+                    <button id="mealEdit" type="submit" class="btn btn-primary">Edit</button>
+                </form>
+            </div>
+        </div>
+        <div id="mealDropdown" class="accordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-{{ meal.meal_id }}" aria-expanded="false" aria-controls="acc-{{ meal.meal_id }}">
+                    Dishes
+                  </button>
+                </h2>
+                <div id="acc-{{ meal.meal_id }}" class="accordion-collapse collapse" data-bs-parent="#mealDropdown">
+                  <div class="accordion-body">
+                    {% for row in dishes[loop.index-1] %}
+                        <div class="mealDishSection" id="{{ row.dish_id }}">
+                            <div class="row align-items-center">
+                                <h3 id="dishName">{{ row.dishName }}</h3>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <img id="dishImage" src="{{ row.dishImg }}">
+                                </div>
+                                <div class="col">
+                                    <p id="dishCourse"> Course: {{ row.dishCourse }}</p>
+                                    <p id="dishCuisine"> Cuisine: {{ row.dishCuisine }}</p>
+                                    <p id="dishCost"> Cost: {{ row.dishCurrency }}{{ row.dishCost / 100 }} </p>
+                                </div>
+                                <div class="col">
+                                    <p id="dishNotes"> {{ row.dishNotes }}</p>
+                                    <div id="dishRating" class="rating">
+                                        {% for i in range(5) %}
+                                            {% if (i < row.dishRating) %}
+                                                <i class="fa-solid fa-star fa-2xl coloured"></i>
+                                            {% else %}
+                                                <i class="fa-solid fa-star fa-2xl not-coloured"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endfor %}
+{% endblock %}
+

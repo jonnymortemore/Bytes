@@ -1,0 +1,298 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Add {{ type }}
+{% endblock %}
+
+{% block main %}
+<!-- Places Accordian-->
+
+<form action="/edit" method="post" id="add-form" class="col-flex centered">
+  {% if (type == "place") %}
+    <div class="accordion add" id="main-accordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#place-panel" aria-expanded="true" aria-controls="place-panel">
+              Place
+            </button>
+          </h2>
+          <fieldset id="place-panel" class="accordion-collapse collapse show">
+            <div class="accordion-body container text-center">
+            <!-- Place Form Info-->
+                <div class="row">
+                  <div class="col">
+                    <img id="placeImg-actual" src="{{info.placeImg}}">
+                    <div class="input-group">
+                        <input name="placeImg" id="placeImg" type="url" value="{{info.placeImg}}" placeholder="image url" class="form-control">
+                      <button id="placeImg-button" type="button" class="btn btn-outline-primary">Update</button>
+                      <button id="placeImg-refresh" class="btn btn-outline-primary btn-sm" type="button"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                    </div>
+                  </div>
+
+                  <div class="col">
+                    <!--column 1-->
+                    <input name="place_id" value="{{info.place_id}}" type="text" id="placeID"  required class="form-control" hidden>
+                    <div class="form-floating">
+                        <input name="placeName" value="{{info.placeName}}" type="text" id="placeName" placeholder="place name" required class="form-control">
+                        <label for="placeName">place name</label>
+                    </div>
+                    <div class="form-floating">
+                      <select name="placeType" required id="placeType"  class="form-select">
+                        <option value="{{info.placeType}}">{{info.placeType}}</option>
+                        <option value="restaurant">Restaurant</option>
+                        <option value="takeaway">Takeaway</option>
+                        <option value="meal kit">Meal Kit Provider</option>
+                      </select>
+                      <label for="placeType">establishment type</label>
+                    </div>
+                    <div class="form-floating">
+                      <input name="placeCuisine" value="{{info.placeCuisine}}" id="placeCuisine" type="text" required placeholder="cuisine" class="form-control">
+                      <label for="placeCuisine">cuisine</label>
+                    </div>
+                    <div class="form-floating">
+                      <input name="placeWebsite" value="{{info.placeWebsite}}" id="placeWebsite" type="url" placeholder="website link" class="form-control">
+                      <label for="placeWebsite">website</label>
+                    </div>
+                    <div class="form-floating">
+                      <textarea id="placeNotes" name="placeNotes" class="form-control">{{info.placeNotes}}</textarea>
+                      <label for="placeNotes">place notes</label>
+                    </div>
+
+                  </div>
+                  <div class="col">
+                    <div class="form-floating">
+                      <input name="placeAddress1" type="text" value="{{info.placeAddress1}}" id="placeAddress1"  placeholder="first address line" class="form-control">
+                      <label for="placeAddress1">first address line</label>
+                    </div>
+                    <div class="form-floating">
+                      <input name="placeAddress2" id="placeAddress2" value="{{info.placeAddress2}}" type="text" placeholder="second address line" class="form-control">
+                      <label for="placeAddress2">second address line</label>
+                    </div>
+                    <div class="form-floating">
+                      <input name="placeCity" id="placeCity" type="text" value="{{info.placeCity}}" placeholder="city" class="form-control" required value ="{{ city }}">
+                      <label for="placeCity">city</label>
+                    </div>
+                    <div class="form-floating">
+                      <input name="placePostcode" id="placePostcode" value="{{info.placePostcode}}" type="text" placeholder="postcode" class="form-control">
+                      <label for="placePostcode">postcode</label>
+                    </div>
+                    <div class="form-floating">
+                      <!-- list of countries taken from https://gist.github.com/danrovito/977bcb97c9c2dfd3398a-->
+                        <select id="placeCountry" name="placeCountry" class="form-select" required>
+                          <option value="{{info.placeCountry}}">{{info.placeCountry}}</option>
+                          <option value="Australia">Australia</option>
+                          <option value="United Kingdom">United Kingdom</option>
+                          <option value="United States">United States</option>
+                        </select>
+                        <label for="placeCountry">country</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-floating">
+                    <input name="placeRating" id="placeRating" type="number" min="1" max="5" hidden value="{{info.placeRating}}">
+                    <div id="placeRating-div" class="rating">
+                      {% for n in range(5) %}
+                        {% if n < info.placeRating %}
+                          <i class="fa-solid fa-star fa-2xl fa-hover" style="color:#34AC60" id="place-star{{n + 1}}"></i>
+                        {% else %}
+                          <i class="fa-solid fa-star fa-2xl fa-hover" id="place-star{{n + 1}}"></i>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+            <!--End of places section-->
+            </div>
+          </fieldset>
+        </div>
+      </div>
+        <br>
+        {% elif (type == "meal") %}
+        <div class="accordion add" id="main-accordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#meal-panel" aria-expanded="true" aria-controls="meal-panel">
+              Meal Details
+            </button>
+          </h2>
+          <fieldset id="meal-panel" class="accordion-collapse collapse show">
+            <div class="accordion-body container text-center">
+                <!-- Meal form starts here-->
+                <div class="row">
+                    <div class="col">
+                      <img id="mealImg-actual" src="{{info.mealImg}}">
+                      <div class="input-group">
+                        <input name="mealImg" id="mealImg" value="{{info.mealImg}}" type="text" class="form-control" placeholder="image URL">
+                        <button id="mealImg-button" class="btn btn-outline-primary" type="button">Update</button>
+                        <button id="mealImg-refresh" class="btn btn-outline-primary btn-sm" type="button"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                      </div>
+
+                    </div>
+                    <div class="col">
+                      <input name="meal_id" value="{{info.meal_id}}" type="text" id="mealID" required class="form-control" hidden>
+                      <div class="form-floating">
+                        <input name="mealDate" id="mealDate" value="{{info.mealDate}}" type="date" class="form-control" required>
+                        <label for="mealDate">date</label>
+                      </div>
+                      <div class="form-floating">
+                        <select name="mealType" id="mealType" required  class="form-select">
+                          <option value="{{info.mealType}}">{{info.mealType}}</option>
+                          <option value="restaurant">restaurant</option>
+                          <option value="takeaway">takeaway</option>
+                          <option value="meal kit">meal kit</option>
+                        </select>
+                        <label for="mealType">type of meal</label>
+                      </div>
+                      <div class="form-floating">
+                        <select name="mealOccasion" id="mealOccasion" required  class="form-select">
+                          <option value="{{info.mealOccasion}}">{{info.mealOccasion}}</option>
+                          <option value="breakfast">breakfast</option>
+                          <option value="lunch">lunch</option>
+                          <option value="dinner">dinner</option>
+                          <option value="snack">snack</option>
+                          <option value="other">other</option>
+                      </select>
+                      <label for="mealOccasion">meal of the day</label>
+                      </div>
+                  </div>
+                  <div class="col">
+
+                      <div class="form-floating">
+                        <textarea id="mealNotes" value="mealNotes" name="mealNotes" class="form-control">{{info.mealNotes}}</textarea>
+                        <label for="mealNotes">meal notes</label>
+                      </div>
+                      <br>
+                      <br>
+                      <div class="form-floating">
+                        <input name="mealRating" id="mealRating" type="number" value="{{info.mealRating}}" min="1" max="5" hidden>
+                        <div id="mealRating-div" class="rating">
+                          {% for n in range(5) %}
+                            {% if n < info.mealRating %}
+                              <i class="fa-solid fa-star fa-2xl fa-hover" style="color:#34AC60" id="meal-star{{n + 1}}"></i>
+                            {% else %}
+                              <i class="fa-solid fa-star fa-2xl fa-hover" id="meal-star{{n + 1}}"></i>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+            </div>
+          </fieldset>
+        </div>
+      </div>
+        <br>
+        {% elif (type == "dish") %}
+        <div class="accordion add" id="main-accordion">
+              <!-- dish Section-->
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#plates-panel" aria-expanded="false" aria-controls="plates-panel">
+              Dishes
+            </button>
+          </h2>
+          <div id="plates-panel" class="accordion-collapse collapse show">
+            <div class="accordion-body container text-center">
+                <fieldset id="add-plates" class="plate-section">
+                  <div id="dish" class="dish">
+                  <div class="row">
+                    <div class="col">
+                      <img id="dishImg-actual" src="{{info.dishImg}}">
+                      <div class="input-group">
+                        <input name="dishImg" id="dishImg" type="text" placeholder="image URL" value="{{info.dishImg}}" class="form-control">
+                        <button id="dishImg-button" class="btn btn-outline-primary" type="button">Update</button>
+                        <button id="dishImg-refresh" class="btn btn-outline-primary btn-sm" type="button"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                      </div>
+                    </div>
+
+                    <div class="col">
+                      <input name="dish_id" value="{{info.dish_id}}" type="text" id="dishID"  required class="form-control" hidden>
+                      <div class="form-floating">
+                        <input name="dishName" id="dishName" type="text" value="{{info.dishName}}" placeholder="dish name" class="form-control">
+                        <label for="dishName">dish name</label>
+                      </div>
+                      <div class="form-floating">
+                        <input name="dishCuisine" id="dishCuisine" type="text" value="{{info.dishCuisine}}" placeholder="cuisine" class="form-control">
+                        <label for="dishCuisine">cuisine</label>
+                      </div>
+                      <div class="form-floating">
+                        <select id="dishCourse" name="dishCourse" class="form-select">
+                          <option value={{info.dishCourse}}>{{info.dishCourse}}</option>
+                          <option value="starter">Starter</option>
+                          <option value="main">Main</option>
+                          <option value="side">Side</option>
+                          <option value="dessert">Dessert</option>
+                          <option value="drink">Drink</option>
+                          <option value="snack">Snack</option>
+                          <option value="other">Other</option>
+                        </select>
+                        <label for="dishCourse">Course</label>
+                      </div>
+                      <div class="form-floating">
+                        <div class="input-group">
+                          <span class="input-group-text">
+                            <select id="dishCurrency" name="dishCurrency" class="form-select">
+                              <option value="{{info.dishCurrency}}">{{info.dishCurrency}}</option>
+                              <option value="$">$</option>
+                              <option value="£">£</option>
+                              <option valye="€">€</option>
+                            </select>
+                          </span>
+                          <input id="dishCost" name="dishCost" value="{{info.dishCost / 100 }}" type="number" step="0.01" placeholder="cost" class="form-control" min="0.01">
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="row">
+                      <div id="linkingDropdown" class="accordion">
+                      {% for dish in linked %}
+                        <div class="accordion-item">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc-{{ dish.linking_id }}" aria-expanded="false" aria-controls="acc-{{ dish.linking_id }}">
+                                {{dish.mealDate}}
+                              </button>
+                            </h2>
+                            <div id="acc-{{ dish.linking_id }}" class="accordion-collapse collapse" data-bs-parent="#linkingDropdown">
+                              <div class="accordion-body">
+                                <div class="form-floating">
+                                  <textarea id="{{ dish.linking_id }}dishNotes" value="{{dish.dishNotes}}" name="dishNotes-{{ dish.linking_id }}" class="form-control"></textarea>
+                                  <label for="dishNotes">dish notes</label>
+                                </div>
+                                <br>
+                                <br>
+                                <input name="dishRating-{{ dish.linking_id }}" id="{{ dish.linking_id }}dishRating" value={{dish.dishRating}} type="number" min="1" max="5" hidden>
+                                <div id="dishRating-div" class="rating">
+                                  {% for n in range(5) %}
+                                    {% if n < dish.dishRating %}
+                                      <i class="fa-solid fa-star fa-2xl fa-hover" style="color:#34AC60" id="{{ dish.linking_id }}dish-star{{n + 1}}"></i>
+                                    {% else %}
+                                      <i class="fa-solid fa-star fa-2xl fa-hover" id="{{ dish.linking_id }}dish-star{{n + 1}}"></i>
+                                    {% endif %}
+                                  {% endfor %}
+                                </div>
+                                <br>
+                                <br>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </fieldset>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    {% endif %}
+    <button id="complete-submit" class="btn btn-primary" type="submit">Update!</button>
+    <img src="static/Brocc.png">
+</form>
+{% endblock %}

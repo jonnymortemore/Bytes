@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Bytes: Home
+{% endblock %}
+
+{% block main %}
+<secton id="splash" class="col-flex centered">
+    <h1 class="name splash-text">Bytes</h1>
+    <p class="splash-text">Remembering what you eat so you don't have too...</p>
+    <img src="static/placeholder-logo.PNG" class="hover-skew">
+</secton>
+<section  id="about" class="col-flex centered">
+        <h2 class="home">Whats it all about?</h2>
+        <p class="home">So you head out to that restaurant you went too three months back, to get that dish you really liked...wait what dish was it again?</p>
+        <p class="home">Bytes will help track what you've eaten, what you liked and didn't like, so next time you'll know immediately what to order!</p>
+        <div id="about-links" class="col-flex centered">
+            <a href="/register">Join us</a>
+            <a href="/login">log back in</a>
+        </div>
+</section>
+{% endblock %}

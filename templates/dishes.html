@@ -1,0 +1,139 @@
+{% extends "data.html" %}
+
+{% block searchHeaders %}
+<option value="rating">Rating</option>
+<option value="eaten">Times Eaten</option>
+<option value="alpha">Alphabetical</option>
+<option value="cost">Cost</option>
+{% endblock %}
+
+
+{% block advancedSearch %}
+<div class="row">
+    <div class="col">
+        <div class="form-floating">
+            <input id="advSearchMinRating" name="advSearchMinRating" type="number" step="1" class="form-control advSearch" min="1" max="5">
+            <label for="advSearchMinRating">Minimum rating</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <input id="advSearchMaxRating" name="advSearchMaxRating" type="number" step="1" class="form-control advSearch" min="1" max="5">
+            <label for="advSearchMaxRating">Maximum rating</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <div class="input-group">
+              <span class="input-group-text">
+                <select id="AdvSearchCostCurrency" name="dishCurrency" class="form-select">
+                  <option value="$">$</option>
+                  <option value="£">£</option>
+                  <option valye="€">€</option>
+                </select>
+              </span>
+              <input id="advSearchCostMin" name="advSearchCostMin" type="number" step="0.01" placeholder="minimum cost" class="form-control advSearch" min="0.01">
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <div class="input-group">
+              <span class="input-group-text">
+                <select id="advSearchCostCurrency" name="dishCurrency" class="form-select">
+                  <option value="$">$</option>
+                  <option value="£">£</option>
+                  <option valye="€">€</option>
+                </select>
+              </span>
+              <input id="advSearchCostMax" name="advSearchCostMax" type="number" step="0.01" placeholder="maximum cost" class="form-control advSearch" min="0.01">
+          </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="AdvSearchCuisine">
+                <option value=""></option>
+                {% for row in cuisine %}
+                    <option value="{{row.dishCuisine}}">{{row.dishCuisine}}</option>
+                {% endfor %}
+            </select>
+            <label for="AdvSearcCuisine">cuisine</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="AdvSearchCourse">
+                <option value=""></option>
+                <option value="starter">Starter</option>
+                <option value="main">Main</option>
+                <option value="side">Side</option>
+                <option value="dessert">Dessert</option>
+                <option value="drink">Drink</option>
+                <option value="snack">Snack</option>
+                <option value="other">Other</option>
+            </select>
+            <label for="AdvSearchCourse">course</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="AdvSearchPlace">
+                <option value=""></option>
+                {% for row in places %}
+                    <option value="{{row.placeName}}">{{row.placeName}}</option>
+                {% endfor %}
+            </select>
+            <label for="AdvSearcPlace">place</label>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block data %}
+    {% for row in dishes %}
+    <section class="dish-section data-section" id={{row.dish_id}}>
+        <div class="row align-items-center">
+            <h2 id="Name">{{ row.dishName }}</h2>
+            <h4 id="dishPlace">{{ row.placeName }}</h4>
+        </div>
+        <div class="row align-items-center">
+            <div class="col">
+                <img id="dishImage" src="{{ row.dishImg }}">
+            </div>
+            <div class="col">
+                <p id="dishCourse"> Course: {{ row.dishCourse }}</p>
+                <p id="dishCuisine"> Cuisine: {{ row.dishCuisine }}</p>
+                <p id="dishCostHidden" hidden>{{ row.dishCost }}</p>
+                <p id="dishCost"> Cost: {{ row.dishCurrency }}{{ row.dishCost / 100 }} </p>
+                <p id="dishVisited"> Times eaten: {{ row.eaten }}</p>
+            </div>
+            <div class="col">
+                <p id="dishNotes"> {{ row.notes }}</p>
+                <div id="dishRating" class="rating">
+                    <p id="rating" value="{{row.average}}" hidden>{{row.average}}</p>
+                    {% for i in range(5) %}
+                        {% if (i < row.average) %}
+                            <i class="fa-solid fa-star fa-2xl coloured"></i>
+                        {% else %}
+                            <i class="fa-solid fa-star fa-2xl not-coloured"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="/edit" method="get" id="edit">
+                    <input name="id" type="text" value={{row.dish_id}} hidden>
+                    <input name="type" type="text" value="dish" hidden>
+                    <button id="dishEdit" type="submit" class="btn btn-primary">Edit</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    {% endfor %}
+{% endblock %}
+

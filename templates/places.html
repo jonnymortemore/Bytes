@@ -1,0 +1,284 @@
+{% extends "data.html" %}
+
+{% block searchHeaders %}
+
+<option value="rating">Rating</option>
+<option value="visited">Visits</option>
+<option value="recent">Recent</option>
+<option value="alpha">Alphabetical</option>
+
+{% endblock %}
+
+{% block advancedSearch %}
+<div class="row">
+    <div class="col">
+        <div class="form-floating">
+            <input id="advSearchMinRating" name="advSearchMinRating" type="number" step="1" class="form-control advSearch" min="1" max="5">
+            <label for="advSearchMinRating">Minimum rating</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <input id="advSearchMaxRating" name="advSearchMaxRating" type="number" step="1" class="form-control advSearch" min="1" max="5">
+            <label for="advSearchMaxRating">Maximum rating</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="AdvSearchCuisine">
+                <option value=""></option>
+                {% for row in cuisine %}
+                    <option value="{{row.dishCuisine}}">{{row.dishCuisine}}</option>
+                {% endfor %}
+            </select>
+            <label for="AdvSearcCuisine">cuisine</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="AdvSearchCity">
+                <option value=""></option>
+                {% for row in city %}
+                    <option value="{{row.placeCity}}">{{row.placeCity}}</option>
+                {% endfor %}
+            </select>
+            <label for="AdvSearchCity">city</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="AdvSearchCountry">
+                <option value=""></option>
+                {% for row in country %}
+                    <option value="{{row.placeCountry}}">{{row.placeCountry}}</option>
+                {% endfor %}
+            </select>
+            <label for="AdvSearchCity">country</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="form-floating">
+            <select name="advSearchType" id="advSearchType" required  class="form-select advSearch">
+            <option value=""></option>
+            <option value="restaurant">restaurant</option>
+            <option value="takeaway">takeaway</option>
+            <option value="meal kit">meal kit</option>
+            </select>
+            <label for="advSearchType">type of meal</label>
+          </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="advSearchName">
+                <option value=""></option>
+                {% for row in dPlaces %}
+                    <option value="{{row.placeName}}">{{row.placeName}}</option>
+                {% endfor %}
+            </select>
+            <label for="advSearcPlace">place</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-floating">
+            <select class="form-select advSearch" id="AdvSearchCuisine">
+                <option value=""></option>
+                {% for row in cuisine %}
+                    <option value="{{row.dishCuisine}}">{{row.dishCuisine}}</option>
+                {% endfor %}
+            </select>
+            <label for="AdvSearcCuisine">cuisine</label>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block data %}
+    {% for place in places %}
+    {% set placeLoop = loop %}
+        <section class="place-section data-section" id="{{ place.place_id }}">
+            <div class="row align-items-center">
+                <h2 id="Name">{{ place.placeName }}</h2>
+            </div>
+            <div class="row align-items-center">
+                <div class="col">
+                    <img id="placeImage" src="{{ place.placeImg }}">
+                </div>
+                <div class="col">
+                    <p id="placeDate" hidden>{{place.recent}}</p>
+                    <p id="placeRecent">Last Visited: {{place.recent}}</p>
+                    <p id="placeType"> {{ place.placeType }}</p>
+                    <p id="placeCuisine"> {{ place.placeCuisine }}</p>
+                    <a id="placeWebsite" href="place.placeWebsite"> {{ place.placeWebsite }}</a>
+                    <p id="placeVisited">Times Visited: {{ place.placeVisited }}</p>
+                </div>
+                <div class="col">
+                    <p id="placeAddress1"> {{ place.placeAddress1 }}</p>
+                    <p id="placeAddress2"> {{ place.placeAddress2 }}</p>
+                    <p id="placeCity"> {{ place.placeCity }}</p>
+                    <p id="placePostCode"> {{ place.placePostcode }}</p>
+                    <p id="placeCountry"> {{ place.placeCountry }}</p>
+                </div>
+                <div class="col">
+                    <p id="placeNotes"> {{ place.placeNotes }}</p>
+                    <div id="placeRating" class="rating">
+                        <p id="rating" hidden>{{place.placeRating}}</p>
+                        {% for i in range(5) %}
+                            {% if (i < place.placeRating ) %}
+                                <i class="fa-solid fa-star fa-2xl coloured"></i>
+                            {% else %}
+                                <i class="fa-solid fa-star fa-2xl not-coloured"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form action="/edit" method="get" id="edit">
+                        <input name="id" type="text" value={{place.place_id}} hidden>
+                        <input name="type" type="text" value="place" hidden>
+                        <button id="placeEdit" type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="accordion" id="placeDropdown-{{ place.place_id }}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dishAccordion-{{ place.place_id }}" aria-expanded="true" aria-controls="dishAccordion-{{ place.place_id }}">
+                        Dishes
+                        </button>
+                    </h2>
+                    <div id="dishAccordion-{{ place.place_id }}" class="accordion-collapse collapse" data-bs-parent="#placeDropdown-{{ place.place_id }}">
+                        <div class="accordion-body">
+                            {% for row in combinedDishes[loop.index-1] %}
+                            <div class="placeMealSection" id="row.dish_id">
+                                <div class="row align-items-center">
+                                    <h2 id="dishName">{{ row.dishName }}</h2>
+                                    <h4 id="dishName">{{ row.placeName }}</h4>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <img id="dishImage" src="{{ row.dishImg }}">
+                                    </div>
+                                    <div class="col">
+                                        <p id="dishCourse"> Course: {{ row.dishCourse }}</p>
+                                        <p id="dishCuisine"> Cuisine: {{ row.dishCuisine }}</p>
+                                        <p id="dishCost"> Cost: {{ row.dishCurrency }}{{ row.dishCost }} </p>
+                                        <p id="dishVisited"> Times eaten: {{ row.eaten }}</p>
+                                    </div>
+                                    <div class="col">
+                                        <p id="dishNotes"> {{ row.notes }}</p>
+                                        <div id="dishRating" class="rating">
+                                            {% for i in range(5) %}
+                                                {% if (i < row.average) %}
+                                                    <i class="fa-solid fa-star fa-2xl coloured"></i>
+                                                {% else %}
+                                                    <i class="fa-solid fa-star fa-2xl not-coloured"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <button id="dishEdit" class="btn btn-primary">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mealAccordion-{{ place.place_id}}" aria-expanded="false" aria-controls="mealAccordion-{{ place.place_id}}">
+                        Meals
+                        </button>
+                    </h2>
+                    <div id="mealAccordion-{{ place.place_id}}" class="accordion-collapse collapse" data-bs-parent="#placeDropdown-{{ place.place_id }}">
+                        <div class="accordion-body">
+                            {% for meal in meals[loop.index-1] %}
+                            <div class="placeMealSection" id="{{ meal.meal_id}}">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <img id="placeMealImage" src="{{ meal.mealImg }}">
+                                    </div>
+                                    <div class="col">
+                                        <h4 id="mealDate">{{ meal.mealDate }}</h4>
+                                    </div>
+                                    <div class="col">
+                                        <p id="mealOccasion">{{ meal.mealOccasion }} </p>
+                                    </div>
+                                    <div class="col">
+                                        <p id="mealNotes">{{ meal.mealNotes }}</p>
+                                        <div id="MealRating" class="rating">
+                                            {% for i in range(0, 5) %}
+                                                {% if (i < meal.mealRating) %}
+                                                    <i class="fa-solid fa-star fa-2xl coloured"></i>
+                                                {% else %}
+                                                    <i class="fa-solid fa-star fa-2xl not-coloured"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <button id="dishEdit" class="btn btn-primary">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="accordion" id="placeMealDropdown-{{ meal.place_id }}">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mealDishAccordion-{{meal.meal_id}}" aria-expanded="false" aria-controls="mealDishAccordion-{{ meal.meal_id}}">
+                                            Dishes
+                                            </button>
+                                        </h2>
+                                        <div id="mealDishAccordion-{{meal.meal_id}}" class="accordion-collapse collapse" data-bs-parent="#placeMealDropdown-{{meal.meal_id}}">
+                                            <div class="accordion-body">
+                                                {% for row in mealDishes[placeLoop.index - 1] %}
+                                                <div class="mealDishSection" id="{{ row.dish_id }}">
+                                                    <div class="row align-items-center">
+                                                        <h3 id="dishName">{{ row.dishName }}</h3>
+                                                    </div>
+                                                    <div class="row align-items-center">
+                                                        <div class="col">
+                                                            <img id="dishImage" src="{{ row.dishImg }}">
+                                                        </div>
+                                                        <div class="col">
+                                                            <p id="dishCourse"> Course: {{ row.dishCourse }}</p>
+                                                            <p id="dishCuisine"> Cuisine: {{ row.dishCuisine }}</p>
+                                                            <p id="dishCost"> Cost: {{ row.dishCurrency }}{{ row.dishCost / 100 }} </p>
+                                                        </div>
+                                                        <div class="col">
+                                                            <p id="dishNotes"> {{ row.dishNotes }}</p>
+                                                            <div id="dishRating" class="rating">
+                                                                {% for i in range(5) %}
+                                                                    {% if (i < row.dishRating) %}
+                                                                        <i class="fa-solid fa-star fa-2xl coloured"></i>
+                                                                    {% else %}
+                                                                        <i class="fa-solid fa-star fa-2xl not-coloured"></i>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endfor %}
+
+{% endblock %}
+
