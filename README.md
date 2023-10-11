@@ -21,6 +21,7 @@ BYTES is a website that helps users track and rate restaurants, meals and specif
 <p>The database was created in SQL using sqlite3.</p>
 <p>The database is relational with a number of different tables that link together. The structure of the database can be seen
 here:</p>
+
 ![databaseStructure](https://github.com/jonnymortemore/Bytes/assets/79447139/d7125d4e-0c12-4c9b-9588-f9f58c4ec89a)
 
 
