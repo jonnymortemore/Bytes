@@ -21,7 +21,9 @@ BYTES is a website that helps users track and rate restaurants, meals and specif
 <p>The database was created in SQL using sqlite3.</p>
 <p>The database is relational with a number of different tables that link together. The structure of the database can be seen
 here:</p>
-<img src="/workspaces/79447139/cs50_x_project/static/databaseStructure.jpg" width=500>
+
+<img src="https://github.com/jonnymortemore/Bytes/assets/79447139/d7125d4e-0c12-4c9b-9588-f9f58c4ec89a">
+
 
 #### Users
 This table stores the user information including username and password. It also stores country and city data. It's id field is linked to almost all other tables in the database and used to control what data is provided to users on log-in. It is also used to track the users login for flask sessions.
@@ -39,7 +41,8 @@ This tracks the specific dish information such as name, cost, course and image.
 The idea behind this table was to allow the same dish to be rated multiple times within different meals while preserving all previous dish rating and notes. It links to both the dish and meal tables using their respective ID's.
 
 ## **Website Stricture**
-<img src="/workspaces/79447139/cs50_x_project/static/websiteStructure.jpg" width=500>
+<img src="https://github.com/jonnymortemore/Bytes/assets/79447139/7868a8da-2597-4f85-8bd4-05f25afdea4a">
+
 
 ## **Account System**
 <p>The website has a simple user login system. Viewing and adding data is restricted to logged in accounts which are accessed using a username and password. Their user ID number is then assigned to the flask session to track their login until logged out.</p>
