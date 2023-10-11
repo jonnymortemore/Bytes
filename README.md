@@ -21,7 +21,7 @@ BYTES is a website that helps users track and rate restaurants, meals and specif
 <p>The database was created in SQL using sqlite3.</p>
 <p>The database is relational with a number of different tables that link together. The structure of the database can be seen
 here:</p>
-<img src="/workspaces/79447139/cs50_x_project/static/databaseStructure.jpg" width=500>
+<img src="[/workspaces/79447139/cs50_x_project/static/databaseStructure.jpg]()" width=500>
 
 #### Users
 This table stores the user information including username and password. It also stores country and city data. It's id field is linked to almost all other tables in the database and used to control what data is provided to users on log-in. It is also used to track the users login for flask sessions.
