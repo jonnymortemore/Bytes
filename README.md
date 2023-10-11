@@ -22,7 +22,7 @@ BYTES is a website that helps users track and rate restaurants, meals and specif
 <p>The database is relational with a number of different tables that link together. The structure of the database can be seen
 here:</p>
 
-![databaseStructure](https://github.com/jonnymortemore/Bytes/assets/79447139/d7125d4e-0c12-4c9b-9588-f9f58c4ec89a)
+<img src="https://github.com/jonnymortemore/Bytes/assets/79447139/d7125d4e-0c12-4c9b-9588-f9f58c4ec89a">
 
 
 #### Users
@@ -41,7 +41,7 @@ This tracks the specific dish information such as name, cost, course and image.
 The idea behind this table was to allow the same dish to be rated multiple times within different meals while preserving all previous dish rating and notes. It links to both the dish and meal tables using their respective ID's.
 
 ## **Website Stricture**
-![websiteStructure](https://github.com/jonnymortemore/Bytes/assets/79447139/7868a8da-2597-4f85-8bd4-05f25afdea4a)
+<img src="https://github.com/jonnymortemore/Bytes/assets/79447139/7868a8da-2597-4f85-8bd4-05f25afdea4a">
 
 
 ## **Account System**
