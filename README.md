@@ -40,7 +40,7 @@ This tracks the specific dish information such as name, cost, course and image.
 #### Linking
 The idea behind this table was to allow the same dish to be rated multiple times within different meals while preserving all previous dish rating and notes. It links to both the dish and meal tables using their respective ID's.
 
-## **Website Stricture**
+## **Website Structure**
 <img src="https://github.com/jonnymortemore/Bytes/assets/79447139/7868a8da-2597-4f85-8bd4-05f25afdea4a">
 
 
